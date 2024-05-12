@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Rotation and Histogram</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<script>
+ var correctCaptcha = function(response) {
+ document.getElementsByName('resp')[0].value = response;
+ document.forms[0].submit();
+ };
+ </script>
+
+</head>
+<body>
+    <h1>Изменение контраста изображения</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" required>
+        <br>
+        Уровень контраста:
+        <input type="number" name="level" min="0" max="100" step = "0.1" required>
+        <br>
+        <div class="g-recaptcha"   id="rcaptcha"  data-sitekey="{{site_key}}" data-callback="correctCaptcha"></div>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
+    {% if original_image %}
+    <h2>Исходное изображение</h2>
+    <img src="{{ url_for('static', filename=original_image) }}" alt="Original Image">
+    {% endif %}
+
+    {% if rotated_image %}
+    <h2>Изображение с измененным контрастом</h2>
+    <img src="{{ url_for('static', filename=rotated_image) }}" alt="Rotated Image">
+    {% endif %}
+
+    {% if histograms %}
+    <h2>График распределения цветов</h2>
+    <img src="{{ url_for('static', filename=histograms) }}" alt="Histograms">
+    {% endif %}
+</body>
+</html>

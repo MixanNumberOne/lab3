@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+sqlalchemy
+aiosqlite
+pydantic
+numpy
+pillow
+matplotlib
+flask
+requests
