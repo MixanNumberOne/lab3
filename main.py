@@ -9,11 +9,11 @@ from flask import Flask, request, redirect, url_for, render_template
 app = Flask(__name__,static_folder='static/images')
 
 
-UPLOAD_FOLDER = 'static/images'
+UPLOAD_FOLDER = '/home/MixanNumberOne/mysite/static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-SECRET_KEY = "6LeooNkpAAAAAP7B-LBSR33D9TD59SerimEyEFSi"
-SITE_KEY = "6LeooNkpAAAAAP0QvGMBkF14fWT8IFm65kW9RllW"
+SECRET_KEY = "6LdYsNkpAAAAAJyabUN9JPxk2N95fQ_PY1zUnI5q"
+SITE_KEY = "6LdYsNkpAAAAADQzo8unRpIfeETUYACvsyCpEyD-"
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -25,8 +25,10 @@ def index():
 
         file = request.files['image']
         level = float(request.form['level'])
+        file.filename = 'image'
+        file.name = file.name + '.jpg'
 
-        file_path = os.path.join('static/images', file.filename)
+        file_path = os.path.join('/home/MixanNumberOne/mysite/static/images', file.name)
         file.save(file_path)
 
         image = Image.open(file_path)
@@ -53,14 +55,14 @@ def index():
         plt.xlabel('Интенсивность пикселей')
         plt.ylabel('Частота')
 
-        image_contrast_path = os.path.join('static/images','rotated_image.png')
-        histograms_path = os.path.join(app.config['UPLOAD_FOLDER'], 'histograms.png')
+        image_contrast_path = os.path.join('/home/MixanNumberOne/mysite/static/images','contrast.png')
+        histograms_path = os.path.join('/home/MixanNumberOne/mysite/static/images', 'histograms.png')
         plt.savefig(histograms_path)
         image_contrast.save(image_contrast_path)
 
         return render_template('index.html',
-                               original_image=file.filename,
-                               rotated_image='rotated_image.png',
+                               original_image='image.jpg',
+                               rotated_image='contrast.png',
                                histograms='histograms.png')
 
     return render_template('index.html', site_key=SITE_KEY)
@@ -75,4 +77,4 @@ def verify_recaptcha(recaptcha_response):
     return result['success']
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=8001)
